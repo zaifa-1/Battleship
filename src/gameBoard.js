@@ -1,11 +1,14 @@
 import { Ship } from "./ship";
-
+// generates a gameboard that has specific boundaries that the ships placed on the gameboard cannot cross
 export class GameBoard{
     constructor(){
+        //a set that keeps track of all the ships on the board
         this.ships= new Set();
+
+        // a set of all the coords that the enemy fleet has attacked
         this.attacks= new Set();
 
-        // add the fleet in the board
+        // all the available ships
         this.fleet={
             warShip: new Ship(5),
             submarine: new Ship(4),
@@ -15,7 +18,7 @@ export class GameBoard{
         }
     }
 
-
+    // function that checks if certain coordinates are valid or not
     placementIsValid(x,y){
         // if the col number, plus the ship length is less than 8 and >= 0, return true
         if(x<10 && x>=0 && y<10 && y>=0){
@@ -26,7 +29,7 @@ export class GameBoard{
     }
 
 
-
+    // while placing the ship on the board, check if the ship can be placed at the desired coords.
     shipIsValid(x,y,ship){
         for(let i=0; i<ship.length; i++){
             if(!this.placementIsValid(x,y+i)){
@@ -37,10 +40,15 @@ export class GameBoard{
     }
 
 
-
+    //place the ship on the board
     placeShip(x,y, ship){
+        //if placement is not valid, return
         if(!this.placementIsValid(x, y + (ship.length-1))) return
+
+        //reset the already existing coordinates (helps if u wanna place ships randomly on board)
         ship.coordinates= []
+
+        //place ship and also add some out of bounds coordinates for other ships
         for(let i=0; i<ship.length; i++){
             let values= [x,y+i]
             let values2= [x+1, y+i]
@@ -93,67 +101,8 @@ export class GameBoard{
         return true
     }
 
-    placeShipVertical(x,y, ship){
-        if(!this.placementIsValid(x + (ship.length-1), y)) return
-        for(let i=0; i<ship.length; i++){
-            let values= [x+i,y]
-            let values2= [x+i, y+1]
-            let values3= [x-i, y+1]
-            //ship
-            this.ships.add(values.toString())
 
-            //previous cells
-            if(this.placementIsValid(values3[0],values3[1])){
-                this.ships.add(values3.toString())
-            }
-
-            //next cells
-            if(this.placementIsValid(values2[0],values2[1])){
-                this.ships.add(values2.toString())
-            }
-
-            //-1
-            if(this.placementIsValid(x, y-1)){
-                this.ships.add([x-1, y].toString())
-            }
-
-            //+1
-            if(this.placementIsValid(x + (ship.length), y)){
-                this.ships.add([x + (ship.length), y].toString())
-            }
-
-            //upper right diagonal
-            if(this.placementIsValid(x-1, y+1)){
-                this.ships.add([x-1, y+1].toString())
-            }
-
-            //lower right diagonal
-            if(this.placementIsValid(x + ship.length, y+1)){
-                this.ships.add([x + ship.length, y+1].toString())
-            }
-
-            //lower left diagonal
-            if(this.placementIsValid(x + ship.length, y-1)){
-                this.ships.add([x + ship.length, y-1].toString())
-            }
-
-            //upper left diagonal
-            if(this.placementIsValid(x-1, y-1)){
-                this.ships.add([x-1, y-1].toString())
-            }
-            
-            ship.coordinates.push(values)
-        }
-        
-        return ship.coordinates
-    }
-
-
-
-
-
-
-
+    //check if the ship has certain coords or no (helper function for checkDamage())
     checkCoordinates(ship,x,y){
         for(let position in ship.coordinates){
           if(ship.coordinates[position][0]===x && ship.coordinates[position][1]===y){
@@ -163,6 +112,7 @@ export class GameBoard{
           return false
       }
 
+      //after receiving an attack, check whether the attack was a hit or no
       checkDamage(fleet,x,y){
   
         for(let ships in fleet){
@@ -172,7 +122,8 @@ export class GameBoard{
         }
         return null
         }
-
+    
+    // check if all the ships have sunk and the battle is lost 
     checkLoss(){
         for(let ship in this.fleet){
             if(this.fleet[ship].sunk !== true){
@@ -182,6 +133,7 @@ export class GameBoard{
         return true
     }    
 
+    //receive attack from enemy fleet
     receiveAttack(x,y){
         let attackPosition= this.checkDamage(this.fleet, x, y)
       
@@ -199,7 +151,7 @@ export class GameBoard{
         
     }
 
-
+    // place ships randomly on board
     placeRandomShips(){
         let fleetLength= Object.keys(this.fleet).length
 

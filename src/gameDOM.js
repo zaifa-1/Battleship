@@ -1,20 +1,31 @@
 import { GameBoard } from "./gameBoard";
 import { Computer } from "./computerMove";
 
-
+// this helps with the UI of the game and initializes the boards
+// GameDom class uses ALL the logic that was implemented in the gameBoard file and provides UI for the user
 export class GameDOM{
     constructor(playerBoard= new GameBoard() , computerBoard= new GameBoard() ){
+        //boards
         this.pBoard= document.querySelector('#player')
         this.cBoard= document.querySelector('#computer')
 
+        //player that will make the move
         this.currentPlayer= null
 
+        //players board where all the ships will be placed
         this.playerGameBoard= playerBoard
+
+        // No. of ships that have been placed
         this.shipsPlaced= 0
 
+        //computers board where all the ships will be placed
         this.computerGameBoard= computerBoard
+
+        //computers AI that will make the moves (players opponent)
         this.comp= new Computer()
 
+
+        //query selectors and event listeners that need to be set up
         this.randomSelection= document.querySelector('.random-btn')
 
         this.btnContainer= document.querySelector('.btn-container')
@@ -33,6 +44,8 @@ export class GameDOM{
 
     }
 
+
+    //get the coordinates of the cell that was clicked 
     getCoords(e){
         let coord= e.target.dataset.cell
         let row= Number (coord.slice(0,1))
@@ -40,8 +53,10 @@ export class GameDOM{
         return [row,col]
     }
 
-    initializeBoards(){
 
+    //initialize both boards and add the ability to attack the computers board
+    initializeBoards(){
+        //eventlistener
         this.cBoard.addEventListener('click',(e)=>{
             if(!e.target.classList.contains('cell')) return
             let attack= this.getCoords(e)
@@ -58,7 +73,7 @@ export class GameDOM{
             return
         })
 
-
+        //initializing the boards  
         for(let i= 0; i< 10; i++){
             for(let j= 0; j< 10; j++){
                 let div= document.createElement('div')
@@ -77,6 +92,7 @@ export class GameDOM{
 
     }
 
+    //start the game
     playGame(){
         this.btnContainer.classList.remove('hidden')
         this.computerContainer.classList.add('hidden')
@@ -97,6 +113,7 @@ export class GameDOM{
         })
     }
 
+    //switch player after each turn
     switchPlayer(){
         if(this.currentPlayer === 'player'){
             this.currentPlayer= 'computer'
@@ -105,6 +122,8 @@ export class GameDOM{
         }else this.currentPlayer= 'player'
     }
 
+
+    //place ships one by one on the board
     placeShipsManually(){
         
         this.highlightHoveredCells()
@@ -122,7 +141,7 @@ export class GameDOM{
             
             if(this.playerGameBoard.shipIsValid(placement[0], placement[1], selectedShip)){ //check if the coordinate is valid or not
                 
-                this.playerGameBoard.placeShip(placement[0], placement[1], selectedShip);
+                this.playerGameBoard.placeShip(placement[0], placement[1], selectedShip); //place ship on the given coords
                 
                 let shipPosition= selectedShip.coordinates
                 
@@ -135,8 +154,9 @@ export class GameDOM{
                 this.shipsPlaced++
 
                 shipName= Object.keys(this.playerGameBoard.fleet)[this.shipsPlaced] // updating name of the ship for DOM content
-                this.placementText.textContent= `place your ${shipName}`
+                this.placementText.textContent= `place your ${shipName}` //update the ship name on DOM
 
+                //check if all ships have been placed and start the game
                 if(this.shipsPlaced === (Object.keys(this.playerGameBoard.fleet).length)){
 
                     this.computerContainer.classList.remove('hidden')
@@ -153,6 +173,7 @@ export class GameDOM{
         
     }
 
+    //randomly place all the ships
     placeShipsOnBoard(){
 
         this.computerContainer.classList.remove('hidden')
@@ -160,8 +181,10 @@ export class GameDOM{
         this.shipsPlaced= Object.keys(this.playerGameBoard.fleet).length
         this.placementText.textContent= 'Time for Battle'
 
+        //remove any extra highlighted cells
         this.removeHighlight()
 
+        //remove any ships that were placed manually
         let cells= document.querySelectorAll('.player > .cell')
         cells.forEach((cell)=>{
             cell.classList.remove('blue')
@@ -180,6 +203,8 @@ export class GameDOM{
         }
     }
 
+
+    //highlight the ships position for users convenience to know if the coords are valid or no
     highlightHoveredCells(){
         
         this.pBoard.addEventListener('mouseover', (e)=>{
@@ -213,6 +238,7 @@ export class GameDOM{
 
     }
 
+    //mainly a helper function for highlightHoveredCells(), it updates the currently highlighted cells in real time
     removeHighlight(){
         let cells= document.querySelectorAll('.player > .cell')
         cells.forEach((cell)=>{
@@ -221,11 +247,13 @@ export class GameDOM{
         })
     }
 
+    //the attack received by the board is displayed 
     displayReceivedAttack(x,y, selectedGameBoard, selectedBoard){
         let attack= selectedGameBoard.receiveAttack(x,y)
 
         let selection= document.querySelector(`${selectedBoard} > [data-cell="${x}-${y}"]`)
 
+        //if attack was successful then mark the ship
         if(attack){
             selection.classList.add('red')
             if(selectedGameBoard.checkLoss()){
@@ -237,17 +265,19 @@ export class GameDOM{
                 
             }
         }
+        //if attack was a miss then mark the coords
         else selection.classList.add('green')
 
     }
 
+    //display the attack made by the computer
     displayComputerAttack(){
         let compAttack= this.comp.playMove(this.playerGameBoard)
 
         this.displayReceivedAttack(compAttack[0], compAttack[1], this.playerGameBoard, '#player')
     }
 
-
+    // restart the game and play again
     restartGame(){
         this.pBoard.innerHTML= ''
         this.cBoard.innerHTML= ''
