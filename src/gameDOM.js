@@ -159,7 +159,6 @@ export class GameDOM{
         this.btnContainer.classList.add('hidden')
         this.shipsPlaced= Object.keys(this.playerGameBoard.fleet).length
         this.placementText.textContent= 'Time for Battle'
-        console.log(this.shipsPlaced)
 
         this.removeHighlight()
 
@@ -232,7 +231,6 @@ export class GameDOM{
             if(selectedGameBoard.checkLoss()){
                 this.modal.showModal()
                 if(selectedGameBoard === this.computerGameBoard){
-                    console.log('YOU WON')
                     this.announceWinner.textContent= 'YOU WON :D'
                 }
                 else this.announceWinner.textContent= 'YOU LOST :('

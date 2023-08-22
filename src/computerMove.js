@@ -3,6 +3,7 @@ export class Computer{
     constructor(){
         //store all the moves in an array,
         this.allMoves= []
+        this.initialMove= null;
         //if the last move was a hit(call the check damage method),
         //then next move should be [x,y+1], else generate a random number
     }
@@ -18,7 +19,17 @@ export class Computer{
                 this.allMoves.push(nextMove)
                 return nextMove
             }
-          
+            
+        }
+        console.log(this.initialMove)
+        nextMove= [this.initialMove[0], this.initialMove[1]-1]
+        if(opponentBoard.checkDamage(opponentBoard.fleet,this.initialMove[0], this.initialMove[1])){
+            if(!opponentBoard.attacks.has(nextMove.toString()) && nextMove[1]>=0){
+                this.initialMove= nextMove
+                this.allMoves.push(nextMove)
+                return nextMove
+            }
+
         }
         
       }
@@ -31,6 +42,7 @@ export class Computer{
     
         if(!opponentBoard.attacks.has(move.toString())){
             this.allMoves.push(move)
+            this.initialMove= move
             return move
         }
         //change the coordinates and check again if the move is valid
