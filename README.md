@@ -617,7 +617,7 @@ Follow these steps to get started with BattleShip on your local machine:
 1. **Clone the Repository:**
    - Clone this repository to your local machine using the following command:
      ```
-     git clone [repository-url]
+     git clone https://github.com/zaifa-1/Battleship
      ```
 
 2. **Open the Game:**
