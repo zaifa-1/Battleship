@@ -6,8 +6,6 @@ let board= new GameDOM()
 
 board.playGame()
 
-document.querySelector('.overlay').showModal()
-
 
 
 

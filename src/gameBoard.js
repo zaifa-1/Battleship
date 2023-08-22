@@ -163,11 +163,11 @@ export class GameBoard{
           return false
       }
 
-      checkDamage(a,x,y){
+      checkDamage(fleet,x,y){
   
-        for(let ships in a){
-          if(this.checkCoordinates(a[ships], x,y)){
-            return a[ships]
+        for(let ships in fleet){
+          if(this.checkCoordinates(fleet[ships], x,y)){
+            return fleet[ships]
           }
         }
         return null
