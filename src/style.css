@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+:root{
+    color-scheme: dark light;
+}
+
 body{
     background-color: rgb(6, 0, 46);
 }
@@ -10,8 +14,10 @@ body{
 
 h1{
     text-align: center;
-    margin-top: 1em;
+    /* margin-top: .25em; */
     color: #fffefe;
+
+    /* margin-bottom: 1em; */
 }
 
 .container{
@@ -29,7 +35,13 @@ h1{
 
     gap: 1px;
 
-    margin: 20px auto;
+    margin: 0 auto;
+}
+
+.text{
+    text-align: center;
+    font-size: 1.125rem;
+    margin-bottom: .5em;
 }
 
 /* .game-board.player{
@@ -46,17 +58,15 @@ h1{
 }
 .computer .cell.invalid{
     cursor: not-allowed;
-    pointer-events: none;
 }
 
-.computer .cell:hover{
+.valid.cell:hover{
     background-color: rgb(255, 0, 204);
     opacity: 0.5;
 }
 
-.computer .cell.invalid:hover{
+.computer .cell.invalid{
     cursor: not-allowed;
-    background-color: inherit;
 }
 
 
@@ -68,4 +78,142 @@ h1{
 }
 .green{
     background-color: rgb(144, 240, 0);
+}
+
+
+.overlay{
+    background: none;
+    outline: none;
+    border: none;
+
+    z-index: 10;
+
+    inset: 50%;
+    transform: translate(-50%, -50%);
+
+    
+}
+
+.overlay-display{
+    display: flex;
+    flex-direction: column;
+
+    gap: 5rem;
+}
+
+.overlay::backdrop{
+    background-color: black;
+    opacity: .9;
+}
+
+.btn-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: inherit;
+
+    margin-top: 1.2em;
+}
+
+.btn-container.hidden{
+    display: none;
+}
+
+.btn{
+    outline: none;
+    border: none;
+
+    padding: .3em 1em;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.rotate-btn, .random-btn{
+    background-color: rgb(255, 174, 0);
+    color: #fffefe;
+
+    font-size: 1.125rem;
+
+    white-space: nowrap;
+
+    opacity: 0.7;
+
+    cursor: pointer;
+}
+
+
+.rotate-btn:hover,
+.random-btn:hover{
+    opacity: 1;
+}
+
+.overlay-text{
+    font-size: 2rem;
+    white-space: nowrap;
+    /* text-align: center; */
+}
+
+.restart{
+    padding: 1em 0.3em;
+    font-size: 1.5rem;
+    background-color: rgb(248, 45, 0);
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.restart:hover{
+    opacity: 1;
+}
+
+.player.invalid{
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+
+.ship-placement{
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.player-container,
+.computer-container{
+    width: 330px;
+    margin: 1.7em auto 0 auto;
+}
+
+.computer-container.hidden{
+    display: none;
+}
+
+
+.cell.hover-clr{
+    background-color: rgba(255, 0, 144, 0.458);
+}
+
+@media(width>770px){
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 80%;
+        /* border: 2px solid red; */
+        margin: 50px auto;
+    }
+
+    h1{
+        margin-top: 1em;
+
+    }
+
+    .ship-placement{
+        margin-top: 1.5em;
+        font-size: 1.5rem;
+    }
 }

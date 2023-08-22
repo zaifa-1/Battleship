@@ -10,14 +10,49 @@
 <body>
     <main>
         <h1>BATTLESHIP</h1>
+
+        <p class="ship-placement text">place your warShip</p>
+
         <div class="container">
 
-            <div class="player game-board" id="player">
+
+            <div class="player-container">
+
+                <p class="player-text text">Your Board</p>
+                <div class="player game-board" id="player">
+                    
+                </div>
+
+                <div class="btn-container ">
+                    <!-- <button class="rotate-btn btn">rotate</button> -->
+                    
+                    <button class="random-btn btn">place randomly</button>
+                    
+                </div>
+                
             </div>
 
-            <div class="computer game-board" id="computer">
+            <div class="computer-container">
+                <p class="computer-text text">Enemy Board</p>
+                <div class="computer game-board" id="computer">
+                </div>
             </div>
         </div>
+
+        <dialog class="overlay">
+
+            <div class="overlay-display">
+
+                <p class="overlay-text">announce winner</p>
+    
+                <button class="restart btn">Play Again!</button>
+                
+            </div>
+            
+
+
+        </dialog>
+
     </main>
 </body>
 </html>

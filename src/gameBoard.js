@@ -3,7 +3,7 @@ import { Ship } from "./ship";
 export class GameBoard{
     constructor(){
         this.ships= new Set();
-        this.attacks= new Set()
+        this.attacks= new Set();
 
         // add the fleet in the board
         this.fleet={
@@ -25,8 +25,22 @@ export class GameBoard{
         return false
     }
 
+
+
+    shipIsValid(x,y,ship){
+        for(let i=0; i<ship.length; i++){
+            if(!this.placementIsValid(x,y+i)){
+                return false
+            }
+        }
+        return true
+    }
+
+
+
     placeShip(x,y, ship){
         if(!this.placementIsValid(x, y + (ship.length-1))) return
+        ship.coordinates= []
         for(let i=0; i<ship.length; i++){
             let values= [x,y+i]
             let values2= [x+1, y+i]
@@ -50,7 +64,7 @@ export class GameBoard{
             }
 
             //+1
-            if(!this.placementIsValid(x, y + (ship.length-1))){
+            if(this.placementIsValid(x, y + (ship.length))){
                 this.ships.add([x, y + (ship.length)].toString())
             }
 
@@ -73,11 +87,10 @@ export class GameBoard{
             if(this.placementIsValid(x-1, y-1)){
                 this.ships.add([x-1, y-1].toString())
             }
-            
             ship.coordinates.push(values)
         }
 
-        return ship.coordinates
+        return true
     }
 
     placeShipVertical(x,y, ship){
@@ -105,7 +118,7 @@ export class GameBoard{
             }
 
             //+1
-            if(!this.placementIsValid(x, y + (ship.length-1))){
+            if(this.placementIsValid(x + (ship.length), y)){
                 this.ships.add([x + (ship.length), y].toString())
             }
 
@@ -179,10 +192,6 @@ export class GameBoard{
             
             attackPosition.hit()
             attackPosition.isSunk()
-
-            if(this.checkLoss()){
-              console.log('game over')
-            }
           return true
         } 
         this.attacks.add([x,y].toString())
