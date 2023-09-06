@@ -1,6 +1,6 @@
 # BattleShip
 
-<a href="https://zaifa-1.github.io/Battleship/" target= "blank">Live preview</a>
+<a href="https://zaifa-1.github.io/Battleship/" >Live preview</a>
 
 A classic Battleship game developed using JavaScript, HTML, and CSS, featuring Test-Driven Development (TDD) to ensure the logic's correctness before implementation.
 
